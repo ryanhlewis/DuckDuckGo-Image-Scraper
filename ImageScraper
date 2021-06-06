@@ -1,0 +1,102 @@
+using System.IO;
+using System.Net;
+
+public class DuckDuckGoImageScraper
+{
+    
+    public void GetImageList(string k)
+    {
+        /*
+        The premise behind using DuckDuckGo's API in this usage is grabbing a unique VQD that correlates
+        to the search term provided, and then using that VQD to get a webpage of corresponding image
+        URLs. 
+
+        This program only grabs the URLs. You can translate them into the textures you need easily depending
+        on what program you are working with.
+        */
+        
+        string keyword = k;
+        string duckURL = "https://duckduckgo.com/";
+      
+        string vqd = grabVQD(duckURL,keyword);
+    
+        //Parameters attached to the URL. Some are unneccesary, while others are neccesary.
+        //DuckDuckGo provides documentation for additional parameters (like SafeSearch) at https://duckduckgo.com/params
+        duckURL += "i.js?l=us-en&o=json&q=" + keyword + "&vqd=" + vqd + "&p=1&v7exp=a";
+            
+        List<string> imageList = imageSearch(duckURL);
+   
+   
+        //Display each URL in the console. You may need to change this line dependent on your IDE/tool.
+        //Therefore, it's been commented out for you to replace it / keep it with your proper usage.
+
+        //foreach(string itemURL in imageList)
+        //Debug.Log(itemURL);
+        
+
+    }
+
+    public static string grabVQD(string Url, string keyword)
+    {
+            //Query for the keyword provided
+            Url = Url + "?q=" + keyword;
+
+            //Make the connection, attach headers
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(Url);
+            myRequest.Method = "GET";
+            myRequest.UserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0";
+            myRequest.Accept = "application/json, text/javascript, */*; q=0.01";
+            myRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            myRequest.Headers["Accept-Language"] = "en-US,en;q=0.5";
+            myRequest.Referer = "https://duckduckgo.com/";
+            myRequest.Headers["DNT"] = "1";
+            
+            //Get full HTML string body of the webpage
+            WebResponse myResponse = myRequest.GetResponse();
+            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+            string result = sr.ReadToEnd();
+            sr.Close();
+            myResponse.Close();
+
+            //Grab special VQD unique to the search query
+            string vqd = result.Substring(result.IndexOf("vqd=")+5,result.IndexOf("'",result.IndexOf("vqd=")+5) - (result.IndexOf("vqd=")+5));
+ 
+            return vqd;
+     }
+
+
+    public static List<string> imageSearch(string Url)
+    {
+            //Make the connection, attach headers
+            HttpWebRequest myRequest = (HttpWebRequest)WebRequest.Create(Url);
+            myRequest.Method = "GET";
+            myRequest.UserAgent = "Mozilla/5.0 (X11; Linux x86_64; rv:66.0) Gecko/20100101 Firefox/66.0";
+            myRequest.Accept = "application/json, text/javascript, */*; q=0.01";
+            myRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8";
+            myRequest.Headers["Accept-Language"] = "en-US,en;q=0.5";
+            myRequest.Referer = "https://duckduckgo.com/";
+            myRequest.Headers["DNT"] = "1";
+            
+            //Get full HTML string body of the webpage
+            WebResponse myResponse = myRequest.GetResponse();
+            StreamReader sr = new StreamReader(myResponse.GetResponseStream(), System.Text.Encoding.UTF8);
+            string result = sr.ReadToEnd();
+            sr.Close();
+            myResponse.Close();
+            
+            //Create image list. DuckDuckGo should give 100 images back.
+            List<string> allImageURLs = new List<string>();
+
+            //Grab all image URLs by using IndexOf and specifically looking for URLs provided after "image":
+            int iterator = 0;        
+            while(result.IndexOf("\"image\":", iterator) != -1) {
+            string newResult = result.Substring(result.IndexOf("\"image\":",iterator) + 9, result.IndexOf("\"",result.IndexOf("\"image\":",iterator) + 9) - (result.IndexOf("\"image\":", iterator) + 9));
+            allImageURLs.Add(newResult);
+            iterator = result.IndexOf("\"image\":",iterator) + 9;
+            }
+
+            return allImageURLs;
+     }
+
+
+}
