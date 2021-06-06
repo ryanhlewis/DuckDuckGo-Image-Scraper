@@ -45,7 +45,7 @@ Some parameters, such as p=1 for enabling SafeSearch, v7exp=a for some unknown f
 ![image](https://user-images.githubusercontent.com/76540311/120916204-d7d92800-c66d-11eb-8300-29042caa3c57.png)
 
 The part we will be concentrated is the URLs directly after the "image": qualifiers. There will be one hundred of these, as DuckDuckGo has returned us the information
-of the first one hundred images that occur when search up our keyword.
+of the first one hundred images that occur when someone searches up the keyword.
 
 Simply grab those URLs by checking for the positions of each "image": and the single quotes around each URL, and you'll be good.
 
