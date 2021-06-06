@@ -1,5 +1,5 @@
 # DuckDuckGo Image Scraper
-A C# (.NET) implementation of grabbing image URLs from the search engine DuckDuckGo.
+A C# (.NET) implementation of grabbing image URLs from the search engine [DuckDuckGo](https://duckduckgo.com).
 
 Python implementation provided by [Joe Dockrill](https://github.com/joedockrill/jmd_imagescraper)
 
