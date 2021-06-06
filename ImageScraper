@@ -21,8 +21,8 @@ public class DuckDuckGoImageScraper
         string vqd = grabVQD(duckURL,keyword);
     
         //Parameters attached to the URL. Some are unneccesary, while others are neccesary.
-        //DuckDuckGo provides documentation for additional parameters (like SafeSearch) at https://duckduckgo.com/params
-        duckURL += "i.js?l=us-en&o=json&q=" + keyword + "&vqd=" + vqd + "&p=1&v7exp=a";
+        //DuckDuckGo provides documentation for additional parameters (like SafeSearch, which is p=1) at https://duckduckgo.com/params
+        duckURL += "i.js?l=us-en&o=json&q=" + keyword + "&vqd=" + vqd + "&p=1";
             
         List<string> imageList = imageSearch(duckURL);
    
