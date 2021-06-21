@@ -38,13 +38,13 @@ This request looks kind of wonky, and it's fine if you don't completely understa
 
 https://duckduckgo.com/i.js?l=us-en&o=json&q=dogs&vqd=3-29643716862703163448438133325666064316-164904873373437596410230701441639107791&p=1&v7exp=a
 
-To make it clear, the first part is the the query to DuckDuckGo's Javascript, duckduckgo.com/i.js
+To make it clear, the first part is the the query to DuckDuckGo's Javascript, duckduckgo.com/i.js                                                                             
 Every parameter after is simply a parameter to make the Javascript function as intended, specifying locality, query, JSON, and most importantly, VQD.
 Some parameters, such as p=1 for enabling SafeSearch, v7exp=a for some unknown function (expiration, probably) are not neccesary, and can be removed.
 
 ![image](https://user-images.githubusercontent.com/76540311/120916204-d7d92800-c66d-11eb-8300-29042caa3c57.png)
 
-The part we will be concentrated is the URLs directly after the "image": qualifiers. There will be one hundred of these, as DuckDuckGo has returned us the information
+The part we will be concentrated on is the URLs directly after the "image": qualifiers. There will be one hundred of these, as DuckDuckGo has returned us the information
 of the first one hundred images that occur when someone searches up the keyword.
 
 Simply grab those URLs by checking for the positions of each "image": and the single quotes around each URL, and you'll be good.
